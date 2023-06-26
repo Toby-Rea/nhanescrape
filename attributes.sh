@@ -11,4 +11,7 @@ get_attributes() {
 export -f get_attributes
 
 mkdir -p attributes
-ls -1 datasets | xargs -I {} jq -r '.datasets | .[] | .docs' datasets/{} | parallel -j4 get_attributes {}
+find datasets -type f -name "*.json" | xargs -I {} jq -r '.datasets | .[] | .docs' {} | parallel -j4 get_attributes {}
+
+# After that finishes, flatten them
+jq -s 'add' attributes/*.json > attributes.json

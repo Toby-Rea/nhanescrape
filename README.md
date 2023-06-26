@@ -9,5 +9,5 @@ Scrape the NHANES website for useful information, such as available datasets and
 ## Usage
 
 ```sh
-chmod +x run.sh && ./run.sh
+./scrape
 ```

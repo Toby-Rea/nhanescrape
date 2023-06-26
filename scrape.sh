@@ -37,6 +37,7 @@ Dietary
 Examination
 Laboratory
 Questionnaire
+LimitedAccess
 EOF
 
 tmp_dir=$(mktemp -d)

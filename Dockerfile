@@ -14,4 +14,4 @@ USER user
 
 COPY . .
 
-ENTRYPOINT [ "/bin/bash", "scrape.sh" ]
+ENTRYPOINT [ "/bin/bash", "available_datasets.sh" ]

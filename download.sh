@@ -1,7 +1,11 @@
 #!/bin/sh
 
-[ $# -ne 1 ] && exit
-[ -f $1 ] || exit
+die() {
+    echo $1; exit
+}
+
+[ $# -ne 1 ] && die "Invalid number of arguments passed"
+[ -f $1 ] || die "Argument must be a file"
 
 # Downloads the datasets
 # jq -r '.datasets | .[] | .data' $1 | parallel -j4 wget {}

@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install -y curl jq parallel
 
 COPY --from=builder /usr/local/cargo/bin/hq /usr/local/bin/hq
 
-CMD [ "/bin/bash", "scripts/available_datasets.sh" ]
+CMD [ "/bin/bash", "./scripts/jobs.sh" ]

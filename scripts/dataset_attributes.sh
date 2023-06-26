@@ -27,3 +27,6 @@ find ./downloads/doc_pages -name "*.htm" -type f | parallel get_attributes {} $t
 
 # Pool the results of all the attribute files
 jq -s 'add' $tmp_dir/*.json > Attributes.json
+
+count=$(jq 'length' Attributes.json)
+printf '[LOG] Scraped attributes for %d datasets\n' "$count"

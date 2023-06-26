@@ -1,8 +1,13 @@
 # NHANEScrape
 
-Scrapes the NHANES website for datasets (excluding limited access).
+Scrape the NHANES website for useful information, such as available datasets and the attributes that belong to each dataset. Functionality to retrieve datasets coming soon...
 
-# Usage
+**Requirements:**
 
-1. Clone this repo
-2. Run `chmod +x run.sh && ./run.sh`
+- `docker`
+
+## Usage
+
+```sh
+chmod +x run.sh && ./run.sh
+```

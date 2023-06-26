@@ -1,8 +1,14 @@
-#!/bin/sh
+#!/bin/bash
+
+download() {
+    curl -s "https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=$1" \
+        > "downloads/component_pages/$1.html"
+}
 
 scrape_datasets() {
-    file="${tmp_dir}/${component}.json"
-    curl -s https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=${component} \
+    component=$(basename $1 .html)
+    file="${2}/${component}.json"
+    cat $1 \
     | hq \
         "{ ${component}: #GridView1 > tbody > tr  | \
             [{ \
@@ -20,10 +26,20 @@ scrape_datasets() {
     printf '[LOG] Discovered %d %s datasets\n' "$count" "$component"
 }
 
+export -f download
+export -f scrape_datasets
+
+mkdir -p downloads/component_pages
+
+cat << EOF | parallel "[ -f downloads/component_pages/{}.html ] || download {}"
+Demographics
+Dietary
+Examination
+Laboratory
+Questionnaire
+EOF
+
 tmp_dir=$(mktemp -d)
 
-for component in "Demographics" "Dietary" "Examination" "Laboratory" "Questionnaire"; do
-    scrape_datasets $component
-done
-
+find "downloads/component_pages" -name *.html | parallel scrape_datasets {} $tmp_dir
 jq -s 'add' ${tmp_dir}/*.json > Available_Datasets.json

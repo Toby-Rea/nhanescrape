@@ -1,2 +1,3 @@
-datasets/
 attributes/
+downloads/
+*.json

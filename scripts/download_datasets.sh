@@ -13,16 +13,16 @@ export -f download
 
 mkdir -p downloads/datasets
 
-# Parameters
-extension=".xpt"
-limit=10
-
-# Uncomment lines to modify what gets downloaded
+# Modify this as you see fit
 #
-# e.g. remove 'head -n ...' to remove the limit of only downloading the first X files
-# e.g. remove 'grep -i ...' to remove the constraint on file type
-
+# Current behaviour:
+# - Filter by extension
+# - Filter by start year (2011 or 2013)
+# - Shuffle and take the first 10
+# - Download
 jq -r "flatten | .[] | .data" Available_Datasets.json \
-| grep -i $extension \
-| head -n $limit \
+| grep -i ".xpt" \
+| grep -i '2011\|2013' \
+| shuf \
+| head -n 10 \
 | parallel download {}

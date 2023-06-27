@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Start the first process
 /bin/bash scripts/available_datasets.sh &&
 /bin/bash scripts/dataset_attributes.sh &
 

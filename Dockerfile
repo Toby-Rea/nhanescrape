@@ -1,4 +1,4 @@
-FROM rust:1.67-slim as builder
+FROM rust:1.67-slim AS builder
 RUN cargo install html-query
 
 FROM debian:bullseye-slim

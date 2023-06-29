@@ -16,10 +16,10 @@ mkdir -p downloads/datasets
 # Modify this as you see fit
 #
 # Current behaviour:
-# - Filter by extension
-# - Filter by start year (2011 or 2013)
-# - Shuffle and take the first 10
-# - Download
+#   - Filter by extension
+#   - Filter by start year (2011 or 2013)
+#   - Shuffle and take the first 10
+#   - Download
 jq -r "flatten | .[] | .data" Available_Datasets.json \
 | grep -i ".xpt" \
 | grep -i '2011\|2013' \

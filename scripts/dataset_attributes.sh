@@ -20,13 +20,13 @@ mkdir -p downloads/doc_pages
 tmp_dir=$(mktemp -d)
 
 # Download all doc files
-jq -r 'flatten | .[] | .docs' Available_Datasets.json | parallel download {} $tmp_dir
+jq -r 'flatten | .[] | .docs' Available_Datasets.json | parallel download {} "${tmp_dir}"
 
 # Scrape attributes
-find ./downloads/doc_pages -name "*.htm" -type f | parallel get_attributes {} $tmp_dir
+find ./downloads/doc_pages -name "*.htm" -type f | parallel get_attributes {} "${tmp_dir}"
 
 # Pool the results of all the attribute files
-jq -s 'add' $tmp_dir/*.json > Attributes.json
+jq -s 'add' "${tmp_dir}"/*.json > Attributes.json
 
 count=$(jq 'length' Attributes.json)
 printf '[LOG] Scraped attributes for %d datasets\n' "$count"

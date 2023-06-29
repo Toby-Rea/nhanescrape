@@ -5,8 +5,8 @@
 
 # Extract the file name from the URL and download the file if it doesn't already exist
 download() {
-    file_name=$(basename $1)
-    [ -f "downloads/datasets/$file_name" ] || curl -s $1 > "downloads/datasets/$file_name"
+    file_name=$(basename "$1")
+    [ -f "downloads/datasets/$file_name" ] || curl -s "$1" > "downloads/datasets/$file_name"
 }
 
 export -f download

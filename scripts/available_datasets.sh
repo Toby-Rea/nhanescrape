@@ -6,11 +6,9 @@ download() {
 }
 
 scrape_datasets() {
-    component=$(basename $1 .html)
+    component=$(basename "$1" .html)
     file="${2}/${component}.json"
-    cat $1 \
-    | hq \
-        "{ ${component}: #GridView1 > tbody > tr  | \
+    hq "{ ${component}: #GridView1 > tbody > tr  | \
             [{ \
                 years: td:nth-child(1), \
                 name: td:nth-child(2), \
@@ -19,10 +17,11 @@ scrape_datasets() {
                 published: td:nth-child(5) \
             }] \
         }" \
+        "$1" \
     | jq \
     | sed '/\"\(data\|docs\)\": \"/ s/\"\//\"https\:\/\/wwwn\.cdc\.gov\//' \
-    > $file
-    count=$(jq '.[] | length' $file)
+    > "${file}"
+    count=$(jq '.[] | length' "${file}")
     printf '[LOG] Discovered %d %s datasets\n' "$count" "$component"
 }
 
@@ -42,5 +41,5 @@ EOF
 
 tmp_dir=$(mktemp -d)
 
-find "downloads/component_pages" -name *.html | parallel scrape_datasets {} $tmp_dir
-jq -s 'add' ${tmp_dir}/*.json > Available_Datasets.json
+find "downloads/component_pages" -name "*.html" | parallel scrape_datasets {} "${tmp_dir}"
+jq -s 'add' "${tmp_dir}"/*.json > Available_Datasets.json

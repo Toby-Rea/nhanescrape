@@ -25,8 +25,12 @@ jq -r 'flatten | .[] | .docs' Available_Datasets.json | parallel download {} "${
 # Scrape attributes
 find ./downloads/doc_pages -name "*.htm" -type f | parallel get_attributes {} "${tmp_dir}"
 
-# Pool the results of all the attribute files
-jq -s 'add' "${tmp_dir}"/*.json > Attributes.json
+# Pool the results of all the attribute files and log the count
+jq -s 'add' "${tmp_dir}"/*.json > Dataset_Attributes.json
+count=$(jq 'length' Dataset_Attributes.json)
+printf '[LOG] Discovered attributes for %d datasets\n' "$count"
 
-count=$(jq 'length' Attributes.json)
-printf '[LOG] Scraped attributes for %d datasets\n' "$count"
+# Store unique available attributes and log the count
+jq 'flatten | unique | del(..|nulls)' Dataset_Attributes.json > Available_Attributes.json
+count=$(jq 'length' Available_Attributes.json)
+printf '[LOG] Discovered %d unique attributes\n' "$count"

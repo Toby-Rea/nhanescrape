@@ -1,14 +1,13 @@
 #!/bin/bash
 
 download() {
-    file_name=$(basename $1)
+    file_name=$(basename "$1")
     [ -f "downloads/doc_pages/$file_name" ] || curl -s "$1" > "downloads/doc_pages/$file_name"
 }
 
 get_attributes() {
-    component=$(basename $1 | cut -d. -f1)
-    cat $1 \
-    | hq "{ COMPONENTNAME: #Codebook > div > dl | [ .info ] }" \
+    component=$(basename "$1" | cut -d. -f1)
+    hq "{ COMPONENTNAME: #Codebook > div > dl | [ .info ] }" "$1" \
     | sed "s/COMPONENTNAME/${component}/" \
     | jq > "$2/${component}.json"
 }

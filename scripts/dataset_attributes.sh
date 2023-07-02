@@ -7,7 +7,10 @@ download() {
 
 get_attributes() {
     component=$(basename "$1" | cut -d. -f1)
-    hq "{ COMPONENTNAME: #Codebook > div > dl | [ .info ] }" "$1" \
+    hq "{ COMPONENTNAME: #Codebook > div > dl | [{ \
+        code: .info, \
+        description: dd:nth-child(4) \
+    }] }" "$1" \
     | sed "s/COMPONENTNAME/${component}/" \
     | jq > "$2/${component}.json"
 }
